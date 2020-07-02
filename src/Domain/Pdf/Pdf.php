@@ -64,7 +64,7 @@ class Pdf extends Dompdf implements PdfInterface
             mkdir($concurrentDirectory);
         }
 
-        $fileName       = md5(uniqid(__FILE__,true)) . 'pdf';
+        $fileName       = md5(uniqid(__FILE__,true)) . '.pdf';
         $this->filePath = self::PERSIST_DIR . DIRECTORY_SEPARATOR . $fileName;
         $this->file     = new \SplFileObject($this->getFilePath(),'w');
 
