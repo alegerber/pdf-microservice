@@ -14,6 +14,6 @@ return function (App $app) {
     });
 
     $app->group('/pdf', function (Group $group) {
-        $group->get('/generate', GenerateAction::class);
+        $group->post('/generate', GenerateAction::class);
     });
 };

@@ -17,12 +17,14 @@ class GenerateAction extends Action
     {
         $pdf = new Pdf();
 
+        $formData = $this->getFormData();
+
         $pdf->loadHtml(
-            $this->request->getAttribute('html')
+            $formData->html
         );
 
-        if (null !== $paper = $this->request->getAttribute('paper')) {
-            $pdf->setPaper($paper['size'], $paper['orientation']);
+        if (property_exists($formData, 'paper')) {
+            $pdf->setPaper($formData->paper->size, $formData->paper->orientation);
         }
 
         return $this->respondWithData([
