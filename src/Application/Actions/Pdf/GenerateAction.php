@@ -15,8 +15,7 @@ class GenerateAction extends Action
      */
     protected function action(): Response
     {
-        $pdf = new Pdf();
-
+        $pdf      = new Pdf();
         $formData = $this->getFormData();
 
         $pdf->loadHtml(
