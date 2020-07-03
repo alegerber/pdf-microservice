@@ -69,12 +69,14 @@ abstract class Action
     abstract protected function action(): Response;
 
     /**
+     * @param bool $assoc
+     *
      * @return array|object
      * @throws HttpBadRequestException
      */
-    protected function getFormData()
+    protected function getFormData(bool $assoc = false)
     {
-        $input = json_decode(file_get_contents('php://input'));
+        $input = json_decode(file_get_contents('php://input'), $assoc);
 
         if (json_last_error() !== JSON_ERROR_NONE) {
             throw new HttpBadRequestException($this->request, 'Malformed JSON input.');
