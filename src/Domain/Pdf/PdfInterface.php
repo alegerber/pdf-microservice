@@ -1,8 +1,8 @@
 <?php
 
-
 namespace App\Domain\Pdf;
 
+use Dompdf\Options;
 
 interface PdfInterface
 {
@@ -20,6 +20,14 @@ interface PdfInterface
      * @return mixed
      */
     public function setPaper($size, $orientation = "portrait");
+
+
+    /**
+     * @param Options $options
+     * @return $this
+     */
+    public function setOptions(Options $options);
+
 
     /**
      * @return string

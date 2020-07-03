@@ -9,6 +9,7 @@ use App\Application\Validator\GenerateValidator;
 use App\Application\Validator\ValidatorInterface;
 use App\Domain\Pdf\Pdf;
 use App\Domain\Pdf\PdfInterface;
+use Dompdf\Options;
 use Psr\Http\Message\ResponseInterface as Response;
 
 class GenerateAction extends Action
@@ -40,6 +41,10 @@ class GenerateAction extends Action
 
         if (isset($formData['paper'])) {
             $pdf->setPaper($formData['paper']['size'], $formData['paper']['orientation']);
+        }
+
+        if (isset($formData['options'])) {
+            $pdf->setOptions(new Options($formData['options']));
         }
 
         return $this->respondWithData($pdf);

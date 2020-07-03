@@ -16,17 +16,19 @@ class GenerateActionTest extends TestCase
 {
 
     /**
-     * @param array $formData
+     * @param array        $formData
      * @param InvokedCount $setPaper
+     * @param InvokedCount $setOptions
      * @dataProvider providerTestAction
      */
-    public function testAction(array $formData, InvokedCount $setPaper)
+    public function testAction(array $formData, InvokedCount $setPaper, InvokedCount $setOptions)
     {
         $pdf               = $this->createMock(Pdf::class);
         $generateValidator = $this->createMock(GenerateValidator::class);
 
         $pdf->expects($this->once())->method('loadHtml');
         $pdf->expects($setPaper)->method('setPaper');
+        $pdf->expects($setOptions)->method('setOptions');
 
         $generateAction = $this->createPartialMock(GenerateAction::class, [
             'getPdf',
@@ -53,7 +55,8 @@ class GenerateActionTest extends TestCase
         return [
             'only_html' => [
                 'formData' => ['html' => 'test'],
-                'setPaper' => $this->never()
+                'setPaper' => $this->never(),
+                'setOptions' => $this->never(),
             ],
             'html_paper' => [
                 'formData' => [
@@ -63,7 +66,22 @@ class GenerateActionTest extends TestCase
                         'orientation' => 'landscape'
                         ]
                 ],
-                'setPaper' => $this->once()
+                'setPaper' => $this->once(),
+                'setOptions' => $this->never(),
+            ],
+            'html_paper_options' => [
+                'formData' => [
+                    'html' => 'test',
+                    'paper' => [
+                        'size' => 'A4',
+                        'orientation' => 'landscape'
+                        ],
+                    'options' => [
+                        'defaultFont' => 'Courier',
+                        ],
+                ],
+                'setPaper' => $this->once(),
+                'setOptions' => $this->once(),
             ],
         ];
     }
@@ -115,6 +133,17 @@ class GenerateActionTest extends TestCase
                         ]
                 ],
                 'exceptionMessage' => 'validation fails for \'paper\''
+            ],
+            'html_paper_options' => [
+                'formData' => [
+                    'html' => 'test',
+                    'paper' => [
+                        'size' => 'A4',
+                        'orientation' => 'landscape'
+                    ],
+                    'options' => 'defaultFont'
+                ],
+                'exceptionMessage' => 'validation fails for \'options\''
             ],
         ];
     }
