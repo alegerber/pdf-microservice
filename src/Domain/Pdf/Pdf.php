@@ -5,7 +5,7 @@ namespace App\Domain\Pdf;
 
 use Dompdf\Dompdf;
 
-class Pdf extends Dompdf implements PdfInterface
+class Pdf extends Dompdf implements PdfInterface, \JsonSerializable
 {
     public const PERSIST_DIR = '/tmp/share_pdf';
 
@@ -81,5 +81,16 @@ class Pdf extends Dompdf implements PdfInterface
         $this->getFile()->fwrite($this->output());
 
         return $this->getFilePath();
+    }
+
+
+    /**
+     * @return array
+     */
+    public function jsonSerialize()
+    {
+        return [
+            'pdfDir' => $this->persist(),
+        ];
     }
 }

@@ -30,8 +30,6 @@ class GenerateAction extends Action
             $pdf->setPaper($formData['paper']['size'], $formData['paper']['orientation']);
         }
 
-        return $this->respondWithData([
-            'pdfDir' => $pdf->persist(),
-        ]);
+        return $this->respondWithData($pdf);
     }
 }
