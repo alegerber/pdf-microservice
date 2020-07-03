@@ -74,7 +74,7 @@ abstract class Action
      * @return array|object
      * @throws HttpBadRequestException
      */
-    protected function getFormData(bool $assoc = false)
+    public function getFormData(bool $assoc = false)
     {
         $input = json_decode(file_get_contents('php://input'), $assoc);
 

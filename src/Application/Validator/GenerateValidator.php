@@ -16,16 +16,16 @@ class GenerateValidator implements ValidatorInterface
     {
         $validate = [];
 
-        $validate['html'] = v::stringType()->validate($input['html']);
+        $validate['html'] = isset($input['html']) && v::stringType()->validate($input['html']);
 
         if (isset($input['paper'])) {
-            $validate['paper'] = v::arrayType()->validate($input['paper'])
-            && isset($input['paper']['size'], $input['paper']['orientation']);
+            $validate['paper'] = isset($input['paper']['size'], $input['paper']['orientation'])
+            && v::arrayType()->validate($input['paper']);
         }
 
         foreach ($validate as $key => $value) {
             if(!$value) {
-                throw new ValidationException('validation fails for ' . $key);
+                throw new ValidationException('validation fails for \'' . $key . '\'');
             }
         }
     }

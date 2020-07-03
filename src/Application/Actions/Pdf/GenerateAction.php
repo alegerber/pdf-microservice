@@ -6,19 +6,31 @@ namespace App\Application\Actions\Pdf;
 
 use App\Application\Actions\Action;
 use App\Application\Validator\GenerateValidator;
+use App\Application\Validator\ValidatorInterface;
 use App\Domain\Pdf\Pdf;
+use App\Domain\Pdf\PdfInterface;
 use Psr\Http\Message\ResponseInterface as Response;
 
 class GenerateAction extends Action
 {
+    public function getPdf(): PdfInterface
+    {
+        return new Pdf();
+    }
+
+    public function getGenerateValidator(): ValidatorInterface
+    {
+        return new GenerateValidator();
+    }
+
     /**
      * {@inheritdoc}
      */
-    protected function action(): Response
+    public function action(): Response
     {
-        $pdf       = new Pdf();
+        $pdf       = $this->getPdf();
         $formData  = $this->getFormData(true);
-        $validator = new GenerateValidator();
+        $validator = $this->getGenerateValidator();
 
         $validator->validate($formData);
 
