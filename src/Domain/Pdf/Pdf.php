@@ -7,7 +7,7 @@ use Dompdf\Dompdf;
 
 class Pdf extends Dompdf implements PdfInterface
 {
-    public const PERSIST_DIR = '/tmp/share/pdf';
+    public const PERSIST_DIR = '/tmp/share_pdf';
 
     /**
      * @var \SplFileObject $file
