@@ -4,13 +4,12 @@ declare(strict_types=1);
 
 namespace App\Application\Validator;
 
-use Dompdf\Options;
 use Respect\Validation\Validator as v;
 
 class GenerateValidator implements ValidatorInterface
 {
     /**
-     * @param $input
+     * @param mixed $input
      * @return mixed
      */
     public  function validate($input)

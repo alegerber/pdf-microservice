@@ -7,15 +7,15 @@ use Dompdf\Options;
 interface PdfInterface
 {
     /**
-     * @param $str
-     * @param null $encoding
+     * @param string $str
+     * @param null   $encoding
      * @return mixed
      */
     public function loadHtml($str, $encoding = null);
 
 
     /**
-     * @param $size
+     * @param string $size
      * @param string $orientation
      * @return mixed
      */

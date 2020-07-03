@@ -7,7 +7,7 @@ namespace App\Application\Validator;
 interface ValidatorInterface
 {
     /**
-     * @param $input
+     * @param mixed $input
      * @return mixed
      */
     public function validate($input);
