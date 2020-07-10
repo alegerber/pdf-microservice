@@ -101,6 +101,7 @@ abstract class Action
 
     /**
      * @param  array|object|null $data
+     * @param  int               $statusCode
      * @return Response
      */
     protected function respondWithData($data = null, int $statusCode = 200): Response
@@ -122,5 +123,20 @@ abstract class Action
         return $this->response
                     ->withHeader('Content-Type', 'application/json')
                     ->withStatus($payload->getStatusCode());
+    }
+
+
+    /**
+     * @param  string $data
+     * @param  int    $statusCode
+     * @return Response
+     */
+    protected function respondStream($data, int $statusCode = 200): Response
+    {
+        $this->response->getBody()->write($data);
+
+        return $this->response
+            ->withHeader('Content-Type', 'application/octet-stream')
+            ->withStatus($statusCode);
     }
 }

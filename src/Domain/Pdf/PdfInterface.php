@@ -30,6 +30,13 @@ interface PdfInterface
 
 
     /**
+     * @param array $options
+     * @return string|null
+     */
+    public function output($options = []): ?string;
+
+
+    /**
      * @return string
      */
     public function persist(): string;

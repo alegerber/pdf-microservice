@@ -85,6 +85,18 @@ class Pdf extends Dompdf implements PdfInterface, \JsonSerializable
 
 
     /**
+     * @param array $options
+     * @return string|null
+     */
+    public function output($options = []): ?string
+    {
+        $this->render();
+
+        return parent::output();
+    }
+
+
+    /**
      * @return array
      */
     public function jsonSerialize()

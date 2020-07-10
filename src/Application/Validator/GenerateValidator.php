@@ -24,7 +24,11 @@ class GenerateValidator implements ValidatorInterface
         }
 
         if (isset($input['options'])) {
-            $validate['options'] = isset($input['options']) && v::arrayType()->validate($input['options']);
+            $validate['options'] = v::arrayType()->validate($input['options']);
+        }
+
+        if (isset($input['stream'])) {
+            $validate['stream'] = v::boolType()->validate($input['stream']);
         }
 
         foreach ($validate as $key => $value) {

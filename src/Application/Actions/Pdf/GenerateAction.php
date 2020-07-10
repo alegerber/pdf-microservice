@@ -47,6 +47,14 @@ class GenerateAction extends Action
             $pdf->setOptions(new Options($formData['options']));
         }
 
+        if (isset($formData['stream']) && $formData['stream']) {
+            if (null === $output = $pdf->output()) {
+                throw new \RuntimeException('could not generate the Pdf');
+            }
+
+            return $this->respondStream($output);
+        }
+
         return $this->respondWithData($pdf);
     }
 }
