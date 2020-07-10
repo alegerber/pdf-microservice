@@ -104,7 +104,7 @@ abstract class Action
      * @param  int               $statusCode
      * @return Response
      */
-    protected function respondWithData($data = null, int $statusCode = 200): Response
+    public function respondWithData($data = null, int $statusCode = 200): Response
     {
         $payload = new ActionPayload($statusCode, $data);
 
@@ -131,7 +131,7 @@ abstract class Action
      * @param  int    $statusCode
      * @return Response
      */
-    protected function respondStream($data, int $statusCode = 200): Response
+    public function respondStream($data, int $statusCode = 200): Response
     {
         $this->response->getBody()->write($data);
 

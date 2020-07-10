@@ -19,28 +19,38 @@ class GenerateActionTest extends TestCase
      * @param array        $formData
      * @param InvokedCount $setPaper
      * @param InvokedCount $setOptions
+     * @param InvokedCount $respondWithData
+     * @param InvokedCount $respondStream
      * @dataProvider providerTestAction
      */
-    public function testAction(array $formData, InvokedCount $setPaper, InvokedCount $setOptions)
-    {
+    public function testAction(
+        array $formData,
+        InvokedCount $setPaper,
+        InvokedCount $setOptions,
+        InvokedCount $respondWithData,
+        InvokedCount $respondStream
+    ) {
         $pdf               = $this->createMock(Pdf::class);
         $generateValidator = $this->createMock(GenerateValidator::class);
 
         $pdf->expects($this->once())->method('loadHtml');
         $pdf->expects($setPaper)->method('setPaper');
         $pdf->expects($setOptions)->method('setOptions');
+        $pdf->method('output')->willReturn('pdf_content');
 
         $generateAction = $this->createPartialMock(GenerateAction::class, [
             'getPdf',
             'getGenerateValidator',
             'getFormData',
             'respondWithData',
+            'respondStream',
         ]);
 
         $generateAction->method('getPdf')->willReturn($pdf);
         $generateAction->method('getGenerateValidator')->willReturn($generateValidator);
         $generateAction->method('getFormData')->willReturn($formData);
-        $generateAction->method('respondWithData')->willReturn(new Response());
+        $generateAction->expects($respondWithData)->method('respondWithData')->willReturn(new Response());
+        $generateAction->expects($respondStream)->method('respondStream')->willReturn(new Response());
 
 
         $this->assertInstanceOf(ResponseInterface::class, $generateAction->action());
@@ -57,6 +67,8 @@ class GenerateActionTest extends TestCase
                 'formData' => ['html' => 'test'],
                 'setPaper' => $this->never(),
                 'setOptions' => $this->never(),
+                'respondWithData' => $this->once(),
+                'respondStream' => $this->never(),
             ],
             'html_paper' => [
                 'formData' => [
@@ -68,6 +80,8 @@ class GenerateActionTest extends TestCase
                 ],
                 'setPaper' => $this->once(),
                 'setOptions' => $this->never(),
+                'respondWithData' => $this->once(),
+                'respondStream' => $this->never(),
             ],
             'html_paper_options' => [
                 'formData' => [
@@ -82,6 +96,25 @@ class GenerateActionTest extends TestCase
                 ],
                 'setPaper' => $this->once(),
                 'setOptions' => $this->once(),
+                'respondWithData' => $this->once(),
+                'respondStream' => $this->never(),
+            ],
+            'html_paper_options_stream' => [
+                'formData' => [
+                    'html' => 'test',
+                    'paper' => [
+                        'size' => 'A4',
+                        'orientation' => 'landscape'
+                        ],
+                    'options' => [
+                        'defaultFont' => 'Courier',
+                        ],
+                    'stream' => true,
+                ],
+                'setPaper' => $this->once(),
+                'setOptions' => $this->once(),
+                'respondWithData' => $this->never(),
+                'respondStream' => $this->once(),
             ],
         ];
     }
@@ -104,12 +137,12 @@ class GenerateActionTest extends TestCase
             'getGenerateValidator',
             'getFormData',
             'respondWithData',
+            'respondStream',
         ]);
 
         $generateAction->method('getPdf')->willReturn($pdf);
         $generateAction->method('getGenerateValidator')->willReturn($generateValidator);
         $generateAction->method('getFormData')->willReturn($formData);
-        $generateAction->method('respondWithData')->willReturn(new Response());
 
         $this->assertInstanceOf(ResponseInterface::class, $generateAction->action());
     }
@@ -144,6 +177,17 @@ class GenerateActionTest extends TestCase
                     'options' => 'defaultFont'
                 ],
                 'exceptionMessage' => 'validation fails for \'options\''
+            ],
+            'html_paper_options_stream' => [
+                'formData' => [
+                    'html' => 'test',
+                    'paper' => [
+                        'size' => 'A4',
+                        'orientation' => 'landscape'
+                    ],
+                    'stream' => []
+                ],
+                'exceptionMessage' => 'validation fails for \'stream\''
             ],
         ];
     }
