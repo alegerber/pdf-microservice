@@ -2,7 +2,7 @@
     "name": "devec/pdf-microservice",
     "description": "Rendering html to pdf per json call.",
     "keywords": [
-        "microframework",
+        "microservice",
         "pdf"
     ],
     "homepage": "https://gitlab.com/devec/pdf-microservice",
